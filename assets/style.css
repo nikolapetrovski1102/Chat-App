@@ -1,0 +1,349 @@
+#LogIn{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.invalid {
+    animation: shake .9s;
+    animation-iteration-count: 1;
+    border-color: red;
+  }
+  
+  @keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+  }
+  #chat{
+    background-color: 	#fff;
+    list-style-type: none;
+    height: 500px;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+    border-top: 1px solid #333;
+    padding-left: 0;
+  }
+  #message{
+    width: 57%;
+    height: 40px;
+  }
+  #send{
+    height: 40px;
+    width: 29%;
+  }
+  #chat::-webkit-scrollbar {
+    width: 1em;
+  }
+  #chat::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+  
+  #chat::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+}
+
+#timeRight{
+  font-size: small;
+  color: #333;
+}
+#timeLeft{
+  color: #333;
+  font-size: small;
+  padding: 0;
+  margin-left: .7rem;
+}
+.lds-ellipsis {
+  margin-top: 50%;
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #248bf5;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+.loader {
+  width: 15px;
+  height: 15px;
+  border: 3px solid #333;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  }
+
+  @keyframes rotation {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+  }
+  .imessage {
+    border-radius: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    font-family: "SanFrancisco";
+    font-size: 1.1rem;
+    max-width: 400px;
+    padding-right: 1.2rem;
+    margin-left: 10%;
+  }
+  
+  .imessage li {
+    margin-top: .5rem;
+    border-radius: 1.15rem;
+    line-height: 1.25;
+    max-width: 75%;
+    padding: 0.5rem .875rem;
+    position: relative;
+    word-wrap: break-word;
+  }
+  
+  .imessage li::before,
+  .imessage li::after {
+    bottom: -0.1rem;
+    content: "";
+    height: 1rem;
+    position: absolute;
+  }
+  
+  li.from-me {
+    align-self: flex-end;
+    background-color: #248bf5;
+    color: #fff; 
+  }
+  
+  li.from-me::before {
+    border-bottom-left-radius: 0.8rem 0.7rem;
+    border-right: 1rem solid #248bf5;
+    right: -0.35rem;
+    transform: translate(0, -0.1rem);
+  }
+  
+  li.from-me::after {
+    background-color: #fff;
+    border-bottom-left-radius: 0.5rem;
+    right: -40px;
+    transform:translate(-30px, -2px);
+    width: 10px;
+  }
+
+  li.from-them {
+    margin: 0;
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+  
+  li.from-me ~ li.from-me {
+    margin: 0.25rem 0 0;
+  }
+  
+  li.from-me ~ li.from-me:not(:last-child) {
+    margin: 0.25rem 0 0;
+  }
+  
+  li.from-me ~ p.from-me:last-child {
+    margin-bottom: 0.5rem;
+  }
+  
+  li.from-them {
+    align-items: flex-start;
+    background-color: #e5e5ea;
+    color: #000;
+  }
+  
+  li.from-them:before {
+    border-bottom-right-radius: 0.8rem 0.7rem;
+    border-left: 1rem solid #e5e5ea;
+    left: -0.35rem;
+    transform: translate(0, -0.1rem);
+  }
+  
+  li.from-them::after {
+    background-color: #fff;
+    border-bottom-right-radius: 0.5rem;
+    left: 20px;
+    transform: translate(-30px, -2px);
+    width: 10px;
+  }
+  
+  li[class^="from-"].emoji {
+    background: none;
+    font-size: 2.5rem;
+  }
+  
+  li[class^="from-"].emoji::before {
+    content: none;
+  }
+  
+  .no-tail::before {
+    display: none;
+  }
+
+  @font-face {
+    font-family: "SanFrancisco";
+    src:
+      url("https://cdn.rawgit.com/AllThingsSmitty/fonts/25983b71/SanFrancisco/sanfranciscodisplay-regular-webfont.woff2") format("woff2"),
+      url("https://cdn.rawgit.com/AllThingsSmitty/fonts/25983b71/SanFrancisco/sanfranciscodisplay-regular-webfont.woff") format("woff");
+  }
+  
+  body {  
+    font-family: -apple-system, 
+      BlinkMacSystemFont, 
+      "Segoe UI", 
+      Roboto, 
+      Oxygen-Sans, 
+      Ubuntu, 
+      Cantarell, 
+      "Helvetica Neue", 
+      sans-serif;
+    font-weight: normal;
+    margin: 0;
+    overflow: hidden;
+  }
+  
+  .container {
+    margin: 0 auto;
+    max-width: 400px;
+    padding: 1rem;
+  }
+  
+  @media screen and (width: 375px) {
+    body {
+      margin: 0 0.5rem;
+    }
+  
+    .container {
+      padding: 0.5rem;
+    }
+  
+    .imessage p {
+      margin: 0.5rem 0;
+    }
+  }
+  #nameSender{
+    font-size: smaller;
+    font-weight: 500;
+    /* margin-top: .5rem; */
+    margin-bottom: .2rem;
+    margin-left: .5rem;
+    color: #949497;
+  }
+  body > div.text-center.w-auto.container{
+    padding-top: 0%;
+  }
+  #LogedIn{
+    padding-bottom: 1%;
+  }
+  #error, #errorCreate{
+    margin-top: 5%;
+    color: red;
+    font-size: 1rem;
+    font-weight: normal;
+  }
+  #them{
+    margin-bottom: 5%;
+  }
+  #JoinedUser{
+    margin: 0;
+  }
+  #selector > p:nth-child(1){
+    margin-bottom: 0%;
+  }
+  #selector{
+    margin-top: 1%;
+  }
+  body > div:nth-child(3){
+    margin-left: 17.5%;
+  }
+  #OnlineUsers > li{
+    list-style-type: none;
+  }
+  #rightImage{
+    padding: 0;
+  }
+  .custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  .custom-file-input::before {  
+    content: 'IMG';
+    display: inline-block;
+    background: linear-gradient(top, #f9f9f9, #e3e3e3);
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+  }
+  .custom-file-input:hover::before {
+    border-color: black;
+  }
+  .custom-file-input:active::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+  }
+  #fileInput{
+    width: 12%;
+    height: 40px;
+    float: left;
+  }

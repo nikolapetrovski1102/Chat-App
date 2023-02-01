@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
+    <script defer src="/__/firebase/9.15.0/firebase-app-compat.js"></script>
+    <script defer src="/__/firebase/9.15.0/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/9.15.0/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/9.15.0/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/9.15.0/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/9.15.0/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/9.15.0/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/9.15.0/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/9.15.0/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/9.15.0/firebase-performance-compat.js"></script>
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="./assets/style.css">
+  </head>
+  <body>
+
+    <div id="loaderPage" class="lds-facebook"><div></div><div></div><div></div></div>
+    
+    <div id="LogedIn" class="w-auto text-center container">
+      <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+      <!-- <div class="row text-end"> -->
+          <!-- Navbar content -->
+          <div class="col">
+            <button id="ModalCreateAcc" type="button" class="text-nowrap btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Create account
+          </button>
+        </div>
+        <div class="col text-nowrap">
+          <button id="ModalSignIn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#SignInTarget">
+            Sign In
+          </button>
+        </div>
+        <!-- <div class="col text-start text-nowrap">
+          <button class="btn btn-primary text-start" id="LogOut">
+            Sign Out
+          </button>
+        </div> -->
+        <div class="col text-nowrap">
+          <div class="dropdown show">
+            <a id="IsSingedIn" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="loader" id="user"></span>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a id="LogOut" class="dropdown-item" href="#">Sign Out</a>
+            </div>
+          </div>
+          <!-- <p id="IsSingedIn">Singed in as <strong class="loader" id="user"> </strong></p> -->
+        </div>
+      </div>
+    </nav>
+    <div class="text-center">
+      <button data-bs-toggle="modal" data-bs-target="#ChatInfo">Online Users (0)</button>
+    </div>
+      <div class="text-center w-auto container">
+      <ul class="overflow-auto w-auto m-auto" id="chat">
+        <p id="PrivateName"></p>
+        <div class="modal fade" id="ChatInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="ChatInfoH5">Online Users</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <ol id="OnlineUsers">
+
+                </ol>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+      </ul>
+      <div>
+      <input id="fileInput" class="custom-file-input" type="file" title="" multiple/>
+      <input id="message" type="text" placeholder="Message...">
+      <button class="text-nowrap btn btn-primary" id="send">Send</button>
+      <button style="display: none;" class="text-nowrap btn btn-primary" id="sub">Send</button>
+      <button style="display: none;" class="text-nowrap btn btn-primary" id="sendPrivate">Send</button>
+    </div>
+  </div>
+  </div>
+
+    <div class="container">
+      <!-- Modal -->
+      <div class="modal fade" id="SignInTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Sign In</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <!-- Modal body -->
+              <div>
+                <div class="px-4 py-3">
+                  <div class="form-group">
+                    <label for="exampleDropdownFormEmail1">Email address</label>
+                    <input type="email" class="form-control" id="email" placeholder="email@example.com">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleDropdownFormPassword1">Password</label>
+                    <input type="password" class="form-control" id="pass" placeholder="Password">
+                  </div>
+                  <div>
+                    <p id="error"></p>
+                  </div>
+                  <br>
+                  <button id="SignIn" class="btn btn-primary">Sign in</button>
+                </div>
+                <div class="text-center">
+                  <div class="dropdown-divider"></div>
+                  <button class="m-auto w-auto btn btn-outline-primary" id="SignInGoogle">
+                    <img src="./assets/google-logo-9824.png" width="30" alt="">
+                    Sign in with Google
+                  </button>
+                  <div class="dropdown-divider"></div>
+                </div>
+                <a class="dropdown-item" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">New around here? Sign up</a>
+                <a class="dropdown-item" href="#">Forgot password?</a>
+              </div>
+              <!-- Modal body end -->
+            </div>
+            <div class="modal-footer">
+              <button id="CloseSingIn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container">
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Create account</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <!-- Modal body -->
+              <div>
+                <div class="px-4 py-3">
+                  <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Username">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="CreateEmail" placeholder="email@example.com">
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="CreatePass" placeholder="Password">
+                  </div>
+                  <div>
+                    <p id="errorCreate"></p>
+                  </div>
+                  <br>
+                  <button id="SignUp" class="btn btn-primary">Create Account</button>
+                </div>
+                <div class="text-center">
+                  <div class="dropdown-divider"></div>
+                  <button class="m-auto w-auto btn btn-outline-primary" id="CreateGoogle">
+                    <img src="./assets/google-logo-9824.png" width="30" alt="">
+                    Sign in with Google
+                  </button>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item text-start" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#SignInTarget" href="#">Already have an account? Sign In</a>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id="CloseCreateAccount" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script type="module" src="./app.js"></script>
+    <script src="./LoginFiled.js"></script>
+
+    
+  </body>
+</html>
