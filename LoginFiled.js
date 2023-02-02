@@ -26,15 +26,15 @@ const ShowLogin = () => {
     document.getElementById('send').disabled = true;
     document.getElementById('LogOut').style.display = 'none'
     document.getElementById('IsSingedIn').innerHTML = "Please Sign In <strong id='user'></strong>"
-    document.getElementById('ModalSignIn').style.display = 'block'
-    document.getElementById('ModalCreateAcc').style.display = 'block'
+    // document.getElementById('ModalSignIn').style.display = 'block'
+    // document.getElementById('ModalCreateAcc').style.display = 'block'
 }
 
 const ShowLogOut = () => {
     document.getElementById('send').disabled = false;
     document.getElementById('LogOut').style.display = 'block'
-    document.getElementById('ModalSignIn').style.display = 'none'
-    document.getElementById('ModalCreateAcc').style.display = 'none'
+    // document.getElementById('ModalSignIn').style.display = 'none'
+    // document.getElementById('ModalCreateAcc').style.display = 'none'
     document.getElementById('IsSingedIn').innerHTML = '<strong id="user"></strong>';
 }
 

@@ -44,11 +44,21 @@ const db = firebase.database();
     });
   }
 
+  if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+    // true for mobile device
+    document.getElementById('check').innerHTML = 'mobile';
+  }else{
+    // false for not mobile device
+    document.getElementById('check').innerHTML = "not mobile device";
+  }
+
 
 firebase.auth().onAuthStateChanged(function(user) {
 
   //If user is still logged in
   if (user) {
+    document.querySelector('body > div.text-center.container').style.display = 'block'
+    document.getElementById('IsLogedIn').style.display = 'none';
 
     var chat = document.getElementById('chat');
 
@@ -70,9 +80,10 @@ firebase.auth().onAuthStateChanged(function(user) {
   
         OnlineUsers.on('child_added', (snapshot) => {
           let chatNames = '<li class="text-start" id="OnlineUser">' + snapshot.val().username + '<span style="display: none;">' + snapshot.val().userUid + '</span> &#128994 </li>'
-          console.log(chatNames);
-          document.getElementById('OnlineUsers').innerHTML += chatNames;
-          document.querySelector('body > div:nth-child(3) > button').innerHTML = 'Online Users' + ' (' + document.querySelectorAll('#OnlineUsers li').length + ')';
+          document.getElementById('onlineUsers').innerHTML += chatNames;
+          // console.log(chatNames);
+          // document.getElementById('OnlineUsers').innerHTML += chatNames;
+          // document.querySelector('body > div:nth-child(3) > button').innerHTML = 'Online Users' + ' (' + document.querySelectorAll('#OnlineUsers li').length + ')';
         });
         
         OnlineUsers.on('child_removed', (snapshot) => {
@@ -108,7 +119,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         document.getElementById('user').innerHTML = user.displayName
         document.querySelector('#user').classList.remove('loader');
       }
-      document.getElementById("LogedIn").style.display = 'block'
+      // document.getElementById("LogedIn").style.display = 'block'
       document.querySelector("#LogOut").addEventListener('click', (event) => {
       signOut(auth).then( () => {
 
@@ -128,45 +139,75 @@ firebase.auth().onAuthStateChanged(function(user) {
       firebase.database().ref("OnlineUsers/" + user.uid).remove();
     });
 
-    var selectedFile;
-    document.getElementById('fileInput').onchange = function () {
-      // alert('Selected file: ' + this.value);
-      document.getElementById('message').placeholder = 'Image Selected';
-      document.getElementById('send').style.display = 'none';
-      document.getElementById('sub').style.display = 'block';
-      selectedFile = this.files[0];
-    };
-    // if( document.getElementById("fileInput").files.length != 0){
-      document.querySelector('#sub').addEventListener('click', () => {
-          let fileName = selectedFile.name;
-          let storageRef = firebase.storage().ref('images/' + fileName);
-          let uploadTask = storageRef.put(selectedFile);
+    var url;
 
-          uploadTask.on('state_changed', function (snapshot) {
-            let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
-            switch (snapshot.state) {
-              case 'paused':
-                console.log('Upload is paused');
-                break;
-              case 'running':
-                console.log('Upload is running');
-                break;
-            }
-          }, function (error) {
-            console.log(error);
-          }, function () {
-            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-              console.log('File available at', downloadURL);
-              set(ref(database, 'messages/' + Date.now()), {
-                message: downloadURL + '_image',
-                name: document.querySelector('#user').innerHTML,
-                timeSent: (new Date().getHours()<10?'0':'') + new Date().getHours() + ":" + (new Date().getMinutes()<10?'0':'') + new Date().getMinutes(),
-                userUid: user.uid
-              })
-            });
-          });
-      })
+    document.getElementById('FireInput').addEventListener('click', () => {
+      document.getElementById('fileInput').click();
+    });
+
+    document.getElementById('fileInput').onchange = async function () {
+      url = await base64Url(this.files[0]);
+      console.log(url);
+      document.getElementById('message').value = url;
+      document.getElementById('message').placeholder = 'Image selected';
+    };
+
+    // document.getElementById('sub').addEventListener('click', () => {
+
+    //   set(ref(database, 'messages/' + Date.now()), {
+    //     message: url,
+    //     username: document.querySelector('#user').innerHTML,
+    //     userUid: user.uid,
+    //     timeSent: (new Date().getHours()<10?'0':'') + new Date().getHours() + ":" + (new Date().getMinutes()<10?'0':'') + new Date().getMinutes(),
+    //   });
+
+    //   document.getElementById('sub').style.display = 'none';
+    //   document.getElementById('send').style.display = 'block';
+    //   document.getElementById('message').placeholder = 'Message...';
+
+    // })
+
+    // if( document.getElementById("fileInput").files.length != 0){
+      // document.querySelector('#sub').addEventListener('click', () => {
+      //     let fileName = selectedFile.name;
+      //     let storageRef = firebase.storage().ref('images/' + fileName);
+      //     let uploadTask = storageRef.put(selectedFile);
+
+      //     uploadTask.on('state_changed', function (snapshot) {
+      //       let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      //       console.log('Upload is ' + progress + '% done');
+      //       switch (snapshot.state) {
+      //         case 'paused':
+      //           console.log('Upload is paused');
+      //           break;
+      //         case 'running':
+      //           console.log('Upload is running');
+      //           break;
+      //       }
+      //     }, function (error) {
+      //       console.log(error);
+      //     }, function () {
+      //       uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+      //         console.log('File available at', downloadURL);
+      //         set(ref(database, 'messages/' + Date.now()), {
+      //           message: downloadURL + '_image',
+      //           name: document.querySelector('#user').innerHTML,
+      //           timeSent: (new Date().getHours()<10?'0':'') + new Date().getHours() + ":" + (new Date().getMinutes()<10?'0':'') + new Date().getMinutes(),
+      //           userUid: user.uid
+      //         })
+      //       });
+      //     });
+      // })
+
+      function base64Url(file){
+        return new Promise(function(resolve,reject){
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result)
+            reader.onerror = (error) => reject(error)
+            reader.readAsDataURL(file);
+        })
+      }
+
   // }
 
       // set(ref(database, 'OnlineUsers/' + user.uid)), {
@@ -249,7 +290,6 @@ firebase.auth().onAuthStateChanged(function(user) {
     //           }
     //             document.getElementById('chat').innerHTML += liElement;
     //             // $(liElement).hide().appendTo('#chat').toggle('normal');
-    //             MessagePoP();
     //             LastTime(document.querySelectorAll('#timeRight'));
     //             LastTime(document.querySelectorAll('#timeLeft'));
     //             setTimeout( () => {
@@ -301,10 +341,14 @@ firebase.auth().onAuthStateChanged(function(user) {
         counter++;
         var info = "";
 
-        if(snapshot.val().message.split('_')[1] == 'image'){
+        // console.log(snapshot.val().message.split(':'));
+
+        if(snapshot.val().message.split(':')[0] == 'data'){
           if (snapshot.val().userUid == user.uid){
-          console.log(snapshot.val().message.split('_')[0]);
-          info = '<div id="me" class="imessage"> <li class="messages text-end from-me" id="rightImage">' + '<img src="' + snapshot.val().message.split('_')[0] + '" class="img-fluid" alt="Responsive image">' + '</li>' + '<p class="text-end" id="timeRight">' + snapshot.val().timeSent + '</p> </div>'
+          info = '<div id="me" class="imessage"> <li class="messages text-end from-me no-tail" id="rightImage">' + '<img src="' + snapshot.val().message + '" width="200" class="img-fluid" alt="Responsive image">' + '</li>' + '<p class="text-end" id="timeRight">' + snapshot.val().timeSent + '</p> </div>'
+        }
+        else{
+          info = '<div id="them" class="imessage"> <li class="messages text-start from-them" id="rightImage">' + '<img src="' + snapshot.val().message + '" width="200" class="img-fluid" alt="Responsive image">' + '</li>' + '<p class="text-start" id="timeRight">' + snapshot.val().timeSent + '</p> </div>'
           }
         }
         else if (snapshot.val().message === "just joined the chat"){
@@ -326,6 +370,7 @@ firebase.auth().onAuthStateChanged(function(user) {
           if (counter == 1){
             document.querySelector('.lds-ellipsis').style.display = 'none';
           }
+          MessagePoP();
         });
       }, 500)
 
@@ -333,6 +378,8 @@ firebase.auth().onAuthStateChanged(function(user) {
 
       //If user is not logged in then show login button
       else {
+        document.querySelector('body > div.text-center.container').style.display = 'none'
+        document.getElementById('IsLogedIn').style.display = 'block';
         document.querySelector('.lds-ellipsis').style.display = 'none';
         ShowLogin();
         
@@ -361,8 +408,7 @@ function GoogleLogin() {
       }
     })
     
-    
-    document.getElementById('LogedIn').style.display = 'block'
+    document.getElementById('IsLogedIn').style.display = 'none';
     document.getElementById('user').innerHTML = user.displayName
     document.getElementById('CloseCreateAccount').click();
     document.getElementById('CloseSingIn').click();
@@ -386,6 +432,8 @@ document.querySelector('#SignUp').addEventListener('click', (event) => {
   const time = (new Date().getHours()<10?'0':'') + new Date().getHours() + ":" + (new Date().getMinutes()<10?'0':'') + new Date().getMinutes();
   createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
+
+    console.log('da');
     // const userCred = push(child(ref(database), 'user')).key;
 
     set(ref(database, 'UserInfo/' + userCredential.user.uid), {
@@ -401,6 +449,7 @@ document.querySelector('#SignUp').addEventListener('click', (event) => {
     })
   });
     
+    document.getElementById('LogedIn').style.display = 'none';
     document.getElementById('user').innerHTML = username;
     document.getElementById('CloseCreateAccount').click();
   })
@@ -429,9 +478,10 @@ document.querySelector('#SignIn').addEventListener('click', (event) => {
     .then((userCredential) => {
     const user = userCredential.user;
 
-    document.getElementById('CloseSingIn').click();
+    document.getElementById('IsLogedIn').style.display = 'none';
   })
   .catch((error) => {
+    console.log(error);
     const errorCode = error.code;
     if (errorCode == "auth/wrong-password" || errorCode == "auth/invalid-email"){
       ErrorHandler("The email or password you entered is incorrect.", "error")

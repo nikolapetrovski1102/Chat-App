@@ -21,46 +21,88 @@
   </head>
   <body>
 
+	<div id="IsLogedIn" class="section">
+		<div class="container">
+			<div class="row full-height justify-content-center">
+				<div class="col-12 text-center align-self-center">
+					<div class="section pb-5 pt-sm-2 text-center">
+						<h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+			          	<input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+			          	<label for="reg-log"></label>
+						<div class="card-3d-wrap mx-auto">
+							<div class="card-3d-wrapper">
+								<div class="card-front">
+									<div class="center-wrap">
+                    <div id="CreateGoogle" class="google-btn m-auto mt-2">
+                      <div class="google-icon-wrapper">
+                        <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+                      </div>
+                      <p class="btn-text"><b>Sign in with google</b></p>
+                    </div>
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">Log In</h4>
+											<div class="form-group">
+												<input type="email" name="logemail" class="form-style" placeholder="Your Email" id="email" autocomplete="off">
+												<i class="input-icon uil uil-at"></i>
+											</div>
+											<div class="form-group mt-2">
+												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="pass" autocomplete="off">
+												<i class="input-icon uil uil-lock-alt"></i>
+											</div>
+											<a id="SignIn" href="#" class="btn mt-4">submit</a>
+                            				<p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
+				      					</div>
+			      					</div>
+			      				</div>
+								<div class="card-back">
+									<div class="center-wrap">
+                    <div id="SignInGoogle" class="google-btn m-auto mt-2">
+                      <div class="google-icon-wrapper">
+                        <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+                      </div>
+                      <p class="btn-text"><b>Sign in with google</b></p>
+                    </div>
+										<div class="section text-center">
+											<h4 class="mb-4 pb-3">Sign Up</h4>
+											<div class="form-group">
+												<input type="text" name="logname" class="form-style" placeholder="Your Full Name" id="username" autocomplete="off">
+												<i class="input-icon uil uil-user"></i>
+											</div>	
+											<div class="form-group mt-2">
+												<input type="email" name="logemail" class="form-style" placeholder="Your Email" id="CreateEmail" autocomplete="off">
+												<i class="input-icon uil uil-at"></i>
+											</div>	
+											<div class="form-group mt-2">
+												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="CreatePass" autocomplete="off">
+												<i class="input-icon uil uil-lock-alt"></i>
+											</div>
+											<a id="SignUp" href="#" class="btn mt-4">submit</a>
+				      					</div>
+			      					</div>
+			      				</div>
+			      			</div>
+			      		</di  v>
+			      	</div>
+		      	</div>
+	      	</div>
+	    </div>
+	</div>
+  </div>
+
     <div id="loaderPage" class="lds-facebook"><div></div><div></div><div></div></div>
-    
-    <div id="LogedIn" class="w-auto text-center container">
-      <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-      <!-- <div class="row text-end"> -->
-          <!-- Navbar content -->
-          <div class="col">
-            <button id="ModalCreateAcc" type="button" class="text-nowrap btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Create account
-          </button>
-        </div>
-        <div class="col text-nowrap">
-          <button id="ModalSignIn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#SignInTarget">
-            Sign In
-          </button>
-        </div>
-        <!-- <div class="col text-start text-nowrap">
-          <button class="btn btn-primary text-start" id="LogOut">
-            Sign Out
-          </button>
-        </div> -->
-        <div class="col text-nowrap">
-          <div class="dropdown show">
-            <a id="IsSingedIn" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span class="loader" id="user"></span>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a id="LogOut" class="dropdown-item" href="#">Sign Out</a>
-            </div>
-          </div>
-          <!-- <p id="IsSingedIn">Singed in as <strong class="loader" id="user"> </strong></p> -->
-        </div>
+
+    <div class="text-end dropdown show">
+      <p id="check" ></p>
+      <a id="IsSingedIn" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="loader" id="user"></span>
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a id="LogOut" class="dropdown-item" href="#">Sign Out</a>
       </div>
-    </nav>
-    <div class="text-center">
-      <button data-bs-toggle="modal" data-bs-target="#ChatInfo">Online Users (0)</button>
     </div>
-      <div class="text-center w-auto container">
-      <ul class="overflow-auto w-auto m-auto" id="chat">
-        <p id="PrivateName"></p>
+      <div class="text-center container">
+      <ul class="overflow-auto" id="chat">
+        <!-- <p id="PrivateName"></p>
         <div class="modal fade" id="ChatInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -79,114 +121,29 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
       </ul>
       <div>
-      <input id="fileInput" class="custom-file-input" type="file" title="" multiple/>
-      <input id="message" type="text" placeholder="Message...">
-      <button class="text-nowrap btn btn-primary" id="send">Send</button>
+        <div class="buttonIn text-start"> 
+          <img id="FireInput" src="https://icon-library.com/images/attach-icon-png/attach-icon-png-17.jpg" width="45" alt="attach">
+          <input id="fileInput" class="custom-file-input" type="file" title="" multiple hidden/>
+          <input id="message" type="text" placeholder="Message...">
+          <button class="text-nowrap btn btn-primary" id="send">Send</button>
+        </div>
       <button style="display: none;" class="text-nowrap btn btn-primary" id="sub">Send</button>
       <button style="display: none;" class="text-nowrap btn btn-primary" id="sendPrivate">Send</button>
     </div>
   </div>
+  
+  <div id="fullInfo" class="w-auto" >
+    <div class="text-center">
+        <ul id="onlineUsers">
+        </ul>
+    </div>
   </div>
 
-    <div class="container">
-      <!-- Modal -->
-      <div class="modal fade" id="SignInTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Sign In</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <!-- Modal body -->
-              <div>
-                <div class="px-4 py-3">
-                  <div class="form-group">
-                    <label for="exampleDropdownFormEmail1">Email address</label>
-                    <input type="email" class="form-control" id="email" placeholder="email@example.com">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleDropdownFormPassword1">Password</label>
-                    <input type="password" class="form-control" id="pass" placeholder="Password">
-                  </div>
-                  <div>
-                    <p id="error"></p>
-                  </div>
-                  <br>
-                  <button id="SignIn" class="btn btn-primary">Sign in</button>
-                </div>
-                <div class="text-center">
-                  <div class="dropdown-divider"></div>
-                  <button class="m-auto w-auto btn btn-outline-primary" id="SignInGoogle">
-                    <img src="./assets/google-logo-9824.png" width="30" alt="">
-                    Sign in with Google
-                  </button>
-                  <div class="dropdown-divider"></div>
-                </div>
-                <a class="dropdown-item" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">New around here? Sign up</a>
-                <a class="dropdown-item" href="#">Forgot password?</a>
-              </div>
-              <!-- Modal body end -->
-            </div>
-            <div class="modal-footer">
-              <button id="CloseSingIn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="container">
-      <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Create account</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <!-- Modal body -->
-              <div>
-                <div class="px-4 py-3">
-                  <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" placeholder="Username">
-                    <label for="email">Email address</label>
-                    <input type="email" class="form-control" id="CreateEmail" placeholder="email@example.com">
-                  </div>
-                  <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="CreatePass" placeholder="Password">
-                  </div>
-                  <div>
-                    <p id="errorCreate"></p>
-                  </div>
-                  <br>
-                  <button id="SignUp" class="btn btn-primary">Create Account</button>
-                </div>
-                <div class="text-center">
-                  <div class="dropdown-divider"></div>
-                  <button class="m-auto w-auto btn btn-outline-primary" id="CreateGoogle">
-                    <img src="./assets/google-logo-9824.png" width="30" alt="">
-                    Sign in with Google
-                  </button>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item text-start" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#SignInTarget" href="#">Already have an account? Sign In</a>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button id="CloseCreateAccount" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
