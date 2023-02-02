@@ -44,20 +44,19 @@ const db = firebase.database();
     });
   }
 
-  if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-    // true for mobile device
-    document.getElementById('check').innerHTML = 'mobile';
-  }else{
-    // false for not mobile device
-    document.getElementById('check').innerHTML = "not mobile device";
+  function autoResizeDiv()
+  {
+      document.getElementById('chat').style.height = window.innerHeight - 200 +'px';
   }
+  window.onresize = autoResizeDiv;
+  autoResizeDiv();
 
 
 firebase.auth().onAuthStateChanged(function(user) {
 
   //If user is still logged in
   if (user) {
-    document.querySelector('body > div.text-center.container').style.display = 'block'
+    // document.querySelector('body > div.text-center.container').style.display = 'block'
     document.getElementById('IsLogedIn').style.display = 'none';
 
     var chat = document.getElementById('chat');
@@ -134,10 +133,20 @@ firebase.auth().onAuthStateChanged(function(user) {
       })
     })
 
-    window.addEventListener('beforeunload', function (e) {
-      e.preventDefault();
-      firebase.database().ref("OnlineUsers/" + user.uid).remove();
-    });
+    // if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+      document.onvisibilitychange = function() {
+        if (document.visibilityState === 'hidden') {
+          firebase.database().ref("OnlineUsers/" + user.uid).remove();
+        }
+      };
+    // }
+    // else{
+    //   window.addEventListener('beforeunload', function (e) {
+    //     e.preventDefault();
+    //     firebase.database().ref("OnlineUsers/" + user.uid).remove();
+    //   });
+    // }
+
 
     var url;
 

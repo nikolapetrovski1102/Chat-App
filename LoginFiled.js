@@ -31,7 +31,7 @@ const ShowLogin = () => {
 }
 
 const ShowLogOut = () => {
-    document.getElementById('send').disabled = false;
+    // document.getElementById('send').disabled = false;
     document.getElementById('LogOut').style.display = 'block'
     // document.getElementById('ModalSignIn').style.display = 'none'
     // document.getElementById('ModalCreateAcc').style.display = 'none'
