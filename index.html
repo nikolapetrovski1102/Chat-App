@@ -15,9 +15,8 @@
     <script defer src="/__/firebase/9.15.0/firebase-remote-config-compat.js"></script>
     <script defer src="/__/firebase/9.15.0/firebase-performance-compat.js"></script>
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="./assets/style.css">
+    <link defer rel="stylesheet" href="./assets/style.css">
   </head>
   <body>
 
@@ -35,7 +34,7 @@
 									<div class="center-wrap">
                     <div id="CreateGoogle" class="google-btn m-auto mt-2">
                       <div class="google-icon-wrapper">
-                        <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+                        <img alt="Google logo" class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
                       </div>
                       <p class="btn-text"><b>Sign in with google</b></p>
                     </div>
@@ -49,6 +48,7 @@
 												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="pass" autocomplete="off">
 												<i class="input-icon uil uil-lock-alt"></i>
 											</div>
+                      <p class="text-start" id="error"></p>
 											<a id="SignIn" href="#" class="btn mt-4">submit</a>
                             				<p class="mb-0 mt-4 text-center"><a href="#0" class="link">Forgot your password?</a></p>
 				      					</div>
@@ -58,7 +58,7 @@
 									<div class="center-wrap">
                     <div id="SignInGoogle" class="google-btn m-auto mt-2">
                       <div class="google-icon-wrapper">
-                        <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+                        <img alt="Google logo" class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
                       </div>
                       <p class="btn-text"><b>Sign in with google</b></p>
                     </div>
@@ -76,6 +76,7 @@
 												<input type="password" name="logpass" class="form-style" placeholder="Your Password" id="CreatePass" autocomplete="off">
 												<i class="input-icon uil uil-lock-alt"></i>
 											</div>
+                      <p class="text-start" id="errorCreate"></p>
 											<a id="SignUp" href="#" class="btn mt-4">submit</a>
 				      					</div>
 			      					</div>
@@ -91,65 +92,109 @@
     <div id="loaderPage" class="lds-facebook"><div></div><div></div><div></div></div>
 
     <div class="text-end dropdown show">
-      <a id="IsSingedIn" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <a id="IsSingedIn" class="btn btn-secondary dropdown-toggle text-end" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="loader" id="user"></span>
       </a>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         <a id="LogOut" class="dropdown-item" href="#">Sign Out</a>
+        <a id="ChangeBackground" data-bs-toggle="modal" data-bs-target="#exampleModal" class="dropdown-item" href="#">Change background</a>
+      </div>
+      <span id="ShowOnlineUsers" ></span>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <ul id="ChangeBG">
+              <li>
+                <img src="./assets/Chat Backgrounds/green.png" width="100" alt="Green">
+              </li>
+              <li>
+                <img src="./assets/Chat Backgrounds/Dark.png" width="100" alt="Green">
+              </li>
+              <li>
+                <img src="./assets/Chat Backgrounds/emoji.png" width="100" alt="Green">
+              </li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back to default</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
       </div>
     </div>
-
-
-      <!-- <div class="text-center container">
-      <ul class="overflow-auto" id="chat">
-        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-      </ul>
-      <div>
-        <div class="buttonIn text-start"> 
-          <img id="FireInput" src="https://icon-library.com/images/attach-icon-png/attach-icon-png-17.jpg" width="45" alt="attach">
-          <input id="fileInput" class="custom-file-input" type="file" title="" multiple hidden/>
-          <input id="message" type="text" placeholder="Message...">
-          <button class="text-nowrap btn btn-primary" id="send">Send</button>
-        </div>
-    </div>
-  </div>
-  
-  <div id="fullInfo" class="w-auto" >
-    <div class="text-center">
-        <ul id="onlineUsers">
-        </ul>
-    </div>
-  </div> -->
 
   <div class="float-container">
     <div class="first-float-child">
       <ul class="overflow-auto" id="chat">
-        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>        
       </ul>
-          <div class="buttonIn text-start"> 
-          <img id="FireInput" src="https://icon-library.com/images/attach-icon-png/attach-icon-png-17.jpg" width="45" alt="attach">
-          <input id="fileInput" class="custom-file-input" type="file" title="" multiple hidden/>
-          <input id="message" type="text" placeholder="Message...">
-          <button class="text-nowrap btn btn-primary" id="send">Send</button>
+          <div class="parent-input">
+            <div class="child-file">
+              <img id="FireInput" src="https://icon-library.com/images/attach-icon-png/attach-icon-png-17.jpg" width="45" alt="attach">
+              <input id="fileInput" class="custom-file-input" type="file" title="" multiple hidden/>
+            </div>
+            <div class="child-input">
+              <input id="message" type="text" placeholder="Message...">
+            </div>
+            <div class="child-button">
+              <button class="text-nowrap btn btn-primary" id="send">Send</button>
+            </div>
         </div>
     </div>
     
     <div class="second-float-child">
       <div class="text-center">
+        <p id="CloseUserCount" class="text-start" >X</p>
+        <h3 id="OnlineUsersCount"></h3>
         <ul id="onlineUsers">
         </ul>
     </div>
     </div>
-    
   </div>
 
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+    Open modal
+  </button>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+        <img id="ModalImage" src="" alt="Selected Image">
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Dismiss</button>
+        <button id="sub" type="button" class="btn btn-danger">Send</button>
+      </div>
+
+    </div>
+  </div>
+</div>
   
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script type="module" src="./app.js"></script>
-    <script src="./LoginFiled.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script defer src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script defer src="./LoginFiled.js"></script>
+    <script defer type="module" src="./app.js"></script>
 
     
   </body>

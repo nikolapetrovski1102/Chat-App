@@ -1,85 +1,80 @@
+window.onload = () => {
+    let background = localStorage.getItem('background');
+    if (background !== null){
+        document.querySelector('#chat').style.backgroundImage = `url(${background})`
+    }
+    else{
+        document.querySelector('#chat').style.background = '#1f2029';
+    }
+} 
+
 const ErrorHandler = (Error, target) => {
+    if (Error === "The email address is already in use."){
+        document.getElementById("CreateEmail").value = "";
+        document.getElementById("CreatePass").value = "";
+        document.getElementById("username").value = "";
+        document.getElementById("CreateEmail").classList.add("invalid")
+    }
+    else if (Error === 'Invalid email address.'){
+        document.getElementById("CreateEmail").value = "";
+        document.getElementById("CreatePass").value = "";
+        document.getElementById("username").value = "";
+        document.getElementById("CreateEmail").classList.add("invalid")
+    }
     if (Error === "Password too weak."){
+        document.getElementById("CreateEmail").value = "";
+        document.getElementById("CreatePass").value = "";
+        document.getElementById("username").value = "";
         document.getElementById("CreatePass").classList.add("invalid")
     }
-    if (target == "error"){
+    if (Error === 'The email or password you entered is incorrect.' || Error === 'User not found.'){
         document.getElementById("email").value = "";
         document.getElementById("pass").value = "";
         document.getElementById("pass").classList.add("invalid")
         document.getElementById("email").classList.add("invalid")
     }
-    else{
-        document.getElementById('username').value = "";
-        document.getElementById('CreateEmail').value = "";
-        document.getElementById("CreateEmail").classList.add("invalid")
-        document.getElementById('CreatePass').value = "";
-    }
     document.getElementById(target).innerHTML = Error;
-
-    setTimeout( () => {
-        $('#error').fadeOut('slow');
-    }, 10000)
+    document.querySelector('.card-front').style.height = "125%";
+    document.querySelector('.card-back').style.height = "125%";
 }
 
 const ShowLogin = () => {
-    console.log('ova');
-    document.getElementById('send').disabled = true;
     document.getElementById('LogOut').style.display = 'none'
-    document.getElementById('IsSingedIn').innerHTML = "Please Sign In <strong id='user'></strong>"
-    // document.getElementById('ModalSignIn').style.display = 'block'
-    // document.getElementById('ModalCreateAcc').style.display = 'block'
+    document.querySelector('#IsSingedIn').style.visibility = 'hidden'
+    document.querySelector('body > div.float-container').style.display = 'none'
+    document.getElementById('IsLogedIn').style.display = 'block';
+    document.querySelector('.lds-ellipsis').style.display = 'none';
 }
 
 const ShowLogOut = () => {
-    // document.getElementById('send').disabled = false;
     document.getElementById('LogOut').style.display = 'block'
-    // document.getElementById('ModalSignIn').style.display = 'none'
-    // document.getElementById('ModalCreateAcc').style.display = 'none'
-    document.getElementById('IsSingedIn').innerHTML = '<strong id="user"></strong>';
+    document.querySelector('#IsSingedIn').style.visibility = 'visible'
 }
 
-// const LoadMessages = () => {
-//     set(ref(database, 'load/' + 'load'), {
-//         load: 'loading'
-//     })
-// }
+document.getElementById('ShowOnlineUsers').addEventListener('click', () => {
+    $('.second-float-child').fadeIn('slow');
+    document.querySelector('.second-float-child').classList.add('mobile')
+    document.getElementById('ShowOnlineUsers').style.display = 'none'
+});
 
-// const uploadInput = document.getElementById("uploadInput");
-// uploadInput.addEventListener(
-//   "change",
-//   () => {
-//     // Calculate total size
-//     let numberOfBytes = 0;
-//     for (const file of uploadInput.files) {
-//       numberOfBytes += file.size;
-//     }
+document.getElementById('CloseUserCount').addEventListener('click', () => {
+    $('.second-float-child').fadeOut('slow');
+    document.querySelector('.second-float-child').classList.remove('mobile')
+    document.getElementById('ShowOnlineUsers').style.display = 'block'
+});
 
-//     // Approximate to the closest prefixed unit
-//     const units = [
-//       "B",
-//       "KiB",
-//       "MiB",
-//       "GiB",
-//       "TiB",
-//       "PiB",
-//       "EiB",
-//       "ZiB",
-//       "YiB",
-//     ];
-//     const exponent = Math.min(
-//       Math.floor(Math.log(numberOfBytes) / Math.log(1024)),
-//       units.length - 1
-//     );
-//     const approx = numberOfBytes / 1024 ** exponent;
-//     const output =
-//       exponent === 0
-//         ? `${numberOfBytes} bytes`
-//         : `${approx.toFixed(3)} ${
-//             units[exponent]
-//           } (${numberOfBytes} bytes)`;
+    console.log( document.querySelectorAll('#exampleModal > div > div > div.modal-body > ul > li > img') );
 
-//     document.getElementById("fileNum").textContent = uploadInput.files.length;
-//     document.getElementById("fileSize").textContent = output;
-//   },
-//   false
-// );
+document.querySelectorAll('#exampleModal > div > div > div.modal-body > ul > li > img').forEach((li) => {
+    li.addEventListener('click', () => {
+        document.querySelector('#chat').style.backgroundImage = `url(${li.src})`
+        localStorage.setItem('background', li.src)
+        document.querySelector('#exampleModal > div > div > div.modal-footer > button:nth-child(2)').click();
+    })
+});
+
+document.querySelector('#exampleModal > div > div > div.modal-footer > button:nth-child(1)').addEventListener('click', () => {
+    document.querySelector('#chat').style.background = '#1f2029';
+    localStorage.removeItem('background')
+    localStorage.setItem('background', '#1f2029')
+});

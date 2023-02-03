@@ -1,7 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
 import { getDatabase, set, ref, push } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-import { signOut, GoogleAuthProvider, getAuth, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"; 
+import { onAuthStateChanged, signOut, GoogleAuthProvider, getAuth, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"; 
 import { getStorage, ref as ref_storage} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyDq6FucrXdbFCIEh9Q7xAw6aJs3irX77Y8",
@@ -47,16 +48,17 @@ const db = firebase.database();
   function autoResizeDiv()
   {
       document.getElementById('chat').style.height = window.innerHeight - 200 +'px';
+      document.querySelector('.second-float-child').style.height = window.innerHeight - 140 +'px';
   }
   window.onresize = autoResizeDiv;
   autoResizeDiv();
-
-
-firebase.auth().onAuthStateChanged(function(user) {
+  
+  onAuthStateChanged(auth, (user) => {
 
   //If user is still logged in
   if (user) {
-    // document.querySelector('body > div.text-center.container').style.display = 'block'
+
+    document.querySelector('body > div.float-container').style.display = 'block'
     document.getElementById('IsLogedIn').style.display = 'none';
 
     var chat = document.getElementById('chat');
@@ -80,22 +82,44 @@ firebase.auth().onAuthStateChanged(function(user) {
         OnlineUsers.on('child_added', (snapshot) => {
           let chatNames = '<li class="text-start" id="OnlineUser">' + snapshot.val().username + '<span style="display: none;">' + snapshot.val().userUid + '</span> &#128994 </li>'
           document.getElementById('onlineUsers').innerHTML += chatNames;
-          // console.log(chatNames);
-          // document.getElementById('OnlineUsers').innerHTML += chatNames;
-          // document.querySelector('body > div:nth-child(3) > button').innerHTML = 'Online Users' + ' (' + document.querySelectorAll('#OnlineUsers li').length + ')';
+          document.querySelector('#OnlineUsersCount').innerHTML = 'Online Users' + ' (' + document.querySelectorAll('#onlineUsers li').length + ')';
+          document.querySelector('#ShowOnlineUsers').innerHTML = document.querySelectorAll('#onlineUsers li').length + ' <span id="pulse" > &#128994 </span>';
         });
+
+                  if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                    document.onvisibilitychange = () => {
+                      console.log('this');
+                      if (document.visibilityState === 'hidden') {
+                        firebase.database().ref("OnlineUsers/" + user.uid).remove();
+                      }
+                      else if (document.visibilityState === 'visible'){
+                        console.log('else if this');
+                        set(ref(database, 'OnlineUsers/'+ user.uid), {
+                          isOnline: 'online',
+                          userUid: user.uid,
+                          username: document.querySelector('#user').innerHTML,
+                        })
+                      }
+                    }
+                  }
+                  else{
+                    console.log('else this');
+                    window.addEventListener('beforeunload',  (e) => {
+                      firebase.database().ref("OnlineUsers/" + user.uid).remove();
+                    });
+                  }
         
         OnlineUsers.on('child_removed', (snapshot) => {
-          document.querySelectorAll('#OnlineUsers li').forEach(element => {
+          document.querySelectorAll('#onlineUsers li').forEach(element => {
             if (element.querySelector('span').innerHTML == snapshot.val().userUid){
               element.remove();
-              document.querySelector('body > div:nth-child(3) > button').innerHTML = 'Online Users' + ' (' + document.querySelectorAll('#OnlineUsers li').length + ')';
+              document.querySelector('#OnlineUsersCount').innerHTML = 'Online Users' + ' (' + document.querySelectorAll('#onlineUsers li').length + ')';
+              document.querySelector('#ShowOnlineUsers').innerHTML = document.querySelectorAll('#onlineUsers li').length + ' <span id="pulse" > &#128994 </span>';
             }
           })
         });
 
       }, 1500);
-
         
       // if user is logged in then show logout button
       ShowLogOut();
@@ -112,7 +136,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         }, function (error) {
         })
       }
-    }, 10)
+    }, 10)//tukaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     //display username if user is logged in with google
       if (user.displayName != null){
         document.getElementById('user').innerHTML = user.displayName
@@ -133,20 +157,6 @@ firebase.auth().onAuthStateChanged(function(user) {
       })
     })
 
-    // if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-      document.onvisibilitychange = function() {
-        if (document.visibilityState === 'hidden') {
-          firebase.database().ref("OnlineUsers/" + user.uid).remove();
-        }
-      };
-    // }
-    // else{
-    //   window.addEventListener('beforeunload', function (e) {
-    //     e.preventDefault();
-    //     firebase.database().ref("OnlineUsers/" + user.uid).remove();
-    //   });
-    // }
-
 
     var url;
 
@@ -156,10 +166,30 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     document.getElementById('fileInput').onchange = async function () {
       url = await base64Url(this.files[0]);
-      console.log(url);
-      document.getElementById('message').value = url;
-      document.getElementById('message').placeholder = 'Image selected';
+      document.querySelector('body > button').click();
+      document.getElementById('ModalImage').src = url;
     };
+
+    document.querySelector('#myModal > div > div > div.modal-footer > button:nth-child(1)').addEventListener('click', () => {
+      document.querySelector('#fileInput').value = '';
+    });
+    document.querySelector('#myModal > div > div > div.modal-header > button').addEventListener('click', () => {
+      document.querySelector('#fileInput').value = '';
+    });
+
+    document.getElementById('sub').addEventListener('click', () => {
+      set(ref(database, 'messages/' + Date.now()), {
+        message: url,
+        username: document.querySelector('#user').innerHTML,
+        timeSent: (new Date().getHours()<10?'0':'') + new Date().getHours() + ":" + (new Date().getMinutes()<10?'0':'') + new Date().getMinutes(),
+        userUid: user.uid,
+      }).then( () => {
+        document.querySelector('#myModal > div > div > div.modal-footer > button:nth-child(1)').click();
+        document.querySelector('#fileInput').value = '';
+      }).catch( (error) => {
+        console.log(error);
+        });
+    });
 
     // document.getElementById('sub').addEventListener('click', () => {
 
@@ -311,9 +341,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     //     });
     //   })
     // })
-    }
-
-    //istening for button on click and evaluating function
+    }   //istening for button on click and evaluating function
     document.querySelector('#send').addEventListener("click", SendMsg)
     //listening for enter key and evaluating function
     document.querySelector('#message').addEventListener('keypress', (e) => { (e.key === 'Enter') ? SendMsg() : null; });
@@ -339,6 +367,8 @@ firebase.auth().onAuthStateChanged(function(user) {
       document.getElementById('message').value = '';
     }
 
+
+
     setTimeout( () => {
 
       let sender = document.getElementById('user').innerHTML;
@@ -350,21 +380,19 @@ firebase.auth().onAuthStateChanged(function(user) {
         counter++;
         var info = "";
 
-        // console.log(snapshot.val().message.split(':'));
-
         if(snapshot.val().message.split(':')[0] == 'data'){
           if (snapshot.val().userUid == user.uid){
-          info = '<div id="me" class="imessage"> <li class="messages text-end from-me no-tail" id="rightImage">' + '<img src="' + snapshot.val().message + '" width="200" class="img-fluid" alt="Responsive image">' + '</li>' + '<p class="text-end" id="timeRight">' + snapshot.val().timeSent + '</p> </div>'
+          info = '<div id="me" class="imessage"> <li class="messages text-end from-me no-tail" id="rightImage">' + '<img src="' + snapshot.val().message + '" width="350"  class="img-fluid" alt="Responsive image">' + '</li>' + '<p class="text-end" id="timeRight">' + snapshot.val().timeSent + '</p> </div>'
         }
         else{
-          info = '<div id="them" class="imessage"> <li class="messages text-start from-them" id="rightImage">' + '<img src="' + snapshot.val().message + '" width="200" class="img-fluid" alt="Responsive image">' + '</li>' + '<p class="text-start" id="timeRight">' + snapshot.val().timeSent + '</p> </div>'
+          info = '<div id="them" class="imessage"> <li class="messages text-start from-them no-tail" id="rightImage">' + '<img src="' + snapshot.val().message + '" width="350" class="img-fluid" alt="Responsive image">' + '</li>' + '<p class="text-start" id="timeRight">' + snapshot.val().timeSent + '</p> </div>'
           }
         }
         else if (snapshot.val().message === "just joined the chat"){
-          info = '<div id="selector"> <p> <strong id="JoinedUser">' + snapshot.val().name + '</strong> ' + snapshot.val().message + '</p> <p id="NewUserTime">' + snapshot.val().timeSent + '</p> </div>'
+          info = '<div class="text-center" id="selector"> <p> <strong id="JoinedUser">' + snapshot.val().name + '</strong> ' + snapshot.val().message + '</p> <p id="NewUserTime">' + snapshot.val().timeSent + '</p> </div>'
         }
         else if (sender === snapshot.val().name){
-          info = '<div id="me" class="imessage"> <li class="messages text-end from-me" id="right">' + snapshot.val().message + '</li>' + '<p class="text-end" id="timeRight">' + snapshot.val().timeSent + '</p> </div>'
+          info = '<div id="me" class="imessage text-end"> <li class="messages text-end from-me" id="right">' + snapshot.val().message + '</li>' + '<p class="text-end" id="timeRight">' + snapshot.val().timeSent + '</p> </div>'
         }
         else{
           info = '<div id="them" class="imessage"> <p id="nameSender" class="text-start">' + snapshot.val().name + '</p> <li class="messages text-start from-them" id="left">'  + snapshot.val().message + '</li>' + '<li class="text-start" id="timeLeft">' + snapshot.val().timeSent + '</li> </div>'
@@ -387,14 +415,11 @@ firebase.auth().onAuthStateChanged(function(user) {
 
       //If user is not logged in then show login button
       else {
-        document.querySelector('body > div.text-center.container').style.display = 'none'
-        document.getElementById('IsLogedIn').style.display = 'block';
-        document.querySelector('.lds-ellipsis').style.display = 'none';
         ShowLogin();
         
-document.querySelector("#SignInGoogle").addEventListener('click', GoogleLogin)
-document.querySelector("#CreateGoogle").addEventListener('click', GoogleLogin)
-function GoogleLogin() {
+  document.querySelector("#SignInGoogle").addEventListener('click', GoogleLogin)
+  document.querySelector("#CreateGoogle").addEventListener('click', GoogleLogin)
+  function GoogleLogin() {
   const auth = getAuth();
   signInWithPopup(auth, provider)
   .then((result) => {
@@ -432,9 +457,9 @@ function GoogleLogin() {
     const credential = GoogleAuthProvider.credentialFromError(error);
     // ...
   });
-}
+  }
 
-document.querySelector('#SignUp').addEventListener('click', (event) => {
+  document.querySelector('#SignUp').addEventListener('click', (event) => {
   const email = document.getElementById('CreateEmail').value;
   const password = document.getElementById('CreatePass').value;
   const username = document.getElementById('username').value;
@@ -460,11 +485,11 @@ document.querySelector('#SignUp').addEventListener('click', (event) => {
     
     document.getElementById('LogedIn').style.display = 'none';
     document.getElementById('user').innerHTML = username;
-    document.getElementById('CloseCreateAccount').click();
   })
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
+    console.log(errorCode);
     if (errorCode == "auth/email-already-in-use"){
       ErrorHandler("The email address is already in use.", "errorCreate")
     }
@@ -475,10 +500,9 @@ document.querySelector('#SignUp').addEventListener('click', (event) => {
       ErrorHandler("Password too weak.", "errorCreate")
     }
   });
+  })
 
-})
-
-document.querySelector('#SignIn').addEventListener('click', (event) => {
+  document.querySelector('#SignIn').addEventListener('click', (event) => {
   const email = document.getElementById('email').value;
   const password = document.getElementById('pass').value;
   
@@ -500,6 +524,6 @@ document.querySelector('#SignIn').addEventListener('click', (event) => {
     }
     const errorMessage = error.message;
     });
-})
-}
-});
+  })
+  }
+  });
