@@ -91,7 +91,7 @@
 
     <div id="loaderPage" class="lds-facebook"><div></div><div></div><div></div></div>
 
-    <div class="text-end dropdown show">
+    <div class="text-end dropdown show float-end">
       <a id="IsSingedIn" class="btn btn-secondary dropdown-toggle text-end" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="loader" id="user"></span>
       </a>
@@ -99,8 +99,9 @@
         <a id="LogOut" class="dropdown-item" href="#">Sign Out</a>
         <a id="ChangeBackground" data-bs-toggle="modal" data-bs-target="#exampleModal" class="dropdown-item" href="#">Change background</a>
       </div>
-      <span id="ShowOnlineUsers" ></span>
     </div>
+
+    <span class="text-start" id="ShowOnlineUsers" ></span>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -120,6 +121,9 @@
               <li>
                 <img src="./assets/Chat Backgrounds/emoji.png" width="100" alt="Green">
               </li>
+              <li>
+                <img src="./assets/Chat Backgrounds/pink.jpg" width="100" alt="Green">
+              </li>
             </ul>
           </div>
           <div class="modal-footer">
@@ -131,6 +135,14 @@
     </div>
 
   <div class="float-container">
+    <div class="second-float-child">
+      <div class="text-center">
+        <h3 id="OnlineUsersCount"></h3>
+        <ul id="onlineUsers">
+        </ul>
+    </div>
+    </div>
+    
     <div class="first-float-child">
       <ul class="overflow-auto" id="chat">
         <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>        
@@ -148,16 +160,56 @@
             </div>
         </div>
     </div>
-    
-    <div class="second-float-child">
-      <div class="text-center">
-        <p id="CloseUserCount" class="text-start" >X</p>
-        <h3 id="OnlineUsersCount"></h3>
-        <ul id="onlineUsers">
-        </ul>
-    </div>
+    <div class="first-float-child-private">
+      <button id="backToGroup"><-</button>
+      <p id="chat-with"></p>
+      <ul class="overflow-auto" id="chat-private">
+        <div class="lds-ellipsis-private"><div></div><div></div><div></div><div></div></div>        
+      </ul>
+          <div class="parent-input-private">
+            <div class="child-file-private">
+              <img id="FireInput-private" src="https://icon-library.com/images/attach-icon-png/attach-icon-png-17.jpg" width="45" alt="attach">
+              <input id="fileInput-private" class="custom-file-input" type="file" title="" multiple hidden/>
+            </div>
+            <div class="child-input-private">
+              <input id="message-private" type="text" placeholder="Message...">
+            </div>
+            <div class="child-button-private">
+              <button class="text-nowrap btn btn-primary" id="send-private">Send</button>
+            </div>
+        </div>
     </div>
   </div>
+
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal-private">
+    Open modal
+  </button>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal-private">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+        <img id="ModalImage-private" src="" alt="Selected Image">
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Dismiss</button>
+        <button id="sub-private" type="button" class="btn btn-danger">Send</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
     Open modal
@@ -195,6 +247,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script defer src="./LoginFiled.js"></script>
     <script defer type="module" src="./app.js"></script>
+    <script defer type="module" src="./PrivateChat.js"></script>
 
     
   </body>

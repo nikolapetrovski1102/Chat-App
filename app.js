@@ -47,8 +47,8 @@ const db = firebase.database();
 
   function autoResizeDiv()
   {
-      document.getElementById('chat').style.height = window.innerHeight - 200 +'px';
-      document.querySelector('.second-float-child').style.height = window.innerHeight - 140 +'px';
+      document.getElementById('chat').style.height = window.innerHeight - 150 +'px';
+      document.querySelector('.second-float-child').style.height = window.innerHeight - 150 +'px';
   }
   window.onresize = autoResizeDiv;
   autoResizeDiv();
@@ -79,21 +79,27 @@ const db = firebase.database();
         //listing all users that have account
         let OnlineUsers = firebase.database().ref("OnlineUsers/");
   
+        let OnlineUsersCount = 0;
         OnlineUsers.on('child_added', (snapshot) => {
-          let chatNames = '<li class="text-start" id="OnlineUser">' + snapshot.val().username + '<span style="display: none;">' + snapshot.val().userUid + '</span> &#128994 </li>'
-          document.getElementById('onlineUsers').innerHTML += chatNames;
-          document.querySelector('#OnlineUsersCount').innerHTML = 'Online Users' + ' (' + document.querySelectorAll('#onlineUsers li').length + ')';
-          document.querySelector('#ShowOnlineUsers').innerHTML = document.querySelectorAll('#onlineUsers li').length + ' <span id="pulse" > &#128994 </span>';
+          if (snapshot.val().userUid != user.uid){
+            console.log(snapshot.val().userUid);
+            document.querySelectorAll('#onlineUsers li').forEach(element => {
+                if (element.querySelector('span').innerHTML == snapshot.val().userUid){
+                  element.innerHTML = snapshot.val().username + '     &#128994' + '<span style="display: none;">' + snapshot.val().userUid + '</span>'
+                  OnlineUsersCount++;
+                }
+              });
+          }
+          document.querySelector('#OnlineUsersCount').innerHTML = 'Online Users' + ' (' + OnlineUsersCount + ')';
+          document.querySelector('#ShowOnlineUsers').innerHTML = OnlineUsersCount + ' <span id="pulse" > &#128994 </span>';
         });
 
                   if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
                     document.onvisibilitychange = () => {
-                      console.log('this');
                       if (document.visibilityState === 'hidden') {
                         firebase.database().ref("OnlineUsers/" + user.uid).remove();
                       }
                       else if (document.visibilityState === 'visible'){
-                        console.log('else if this');
                         set(ref(database, 'OnlineUsers/'+ user.uid), {
                           isOnline: 'online',
                           userUid: user.uid,
@@ -103,7 +109,6 @@ const db = firebase.database();
                     }
                   }
                   else{
-                    console.log('else this');
                     window.addEventListener('beforeunload',  (e) => {
                       firebase.database().ref("OnlineUsers/" + user.uid).remove();
                     });
@@ -112,9 +117,11 @@ const db = firebase.database();
         OnlineUsers.on('child_removed', (snapshot) => {
           document.querySelectorAll('#onlineUsers li').forEach(element => {
             if (element.querySelector('span').innerHTML == snapshot.val().userUid){
-              element.remove();
-              document.querySelector('#OnlineUsersCount').innerHTML = 'Online Users' + ' (' + document.querySelectorAll('#onlineUsers li').length + ')';
-              document.querySelector('#ShowOnlineUsers').innerHTML = document.querySelectorAll('#onlineUsers li').length + ' <span id="pulse" > &#128994 </span>';
+              console.log('removed');
+              element.innerHTML = snapshot.val().username + '<span style="display: none;">  ' + snapshot.val().userUid + '</span>'
+              OnlineUsersCount--;
+              document.querySelector('#OnlineUsersCount').innerHTML = 'Online Users' + ' (' + OnlineUsersCount + ')';
+              document.querySelector('#ShowOnlineUsers').innerHTML = OnlineUsersCount + ' <span id="pulse" > &#128994 </span>';
             }
           })
         });
@@ -136,7 +143,7 @@ const db = firebase.database();
         }, function (error) {
         })
       }
-    }, 10)//tukaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    }, 10)
     //display username if user is logged in with google
       if (user.displayName != null){
         document.getElementById('user').innerHTML = user.displayName
@@ -191,53 +198,6 @@ const db = firebase.database();
         });
     });
 
-    // document.getElementById('sub').addEventListener('click', () => {
-
-    //   set(ref(database, 'messages/' + Date.now()), {
-    //     message: url,
-    //     username: document.querySelector('#user').innerHTML,
-    //     userUid: user.uid,
-    //     timeSent: (new Date().getHours()<10?'0':'') + new Date().getHours() + ":" + (new Date().getMinutes()<10?'0':'') + new Date().getMinutes(),
-    //   });
-
-    //   document.getElementById('sub').style.display = 'none';
-    //   document.getElementById('send').style.display = 'block';
-    //   document.getElementById('message').placeholder = 'Message...';
-
-    // })
-
-    // if( document.getElementById("fileInput").files.length != 0){
-      // document.querySelector('#sub').addEventListener('click', () => {
-      //     let fileName = selectedFile.name;
-      //     let storageRef = firebase.storage().ref('images/' + fileName);
-      //     let uploadTask = storageRef.put(selectedFile);
-
-      //     uploadTask.on('state_changed', function (snapshot) {
-      //       let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      //       console.log('Upload is ' + progress + '% done');
-      //       switch (snapshot.state) {
-      //         case 'paused':
-      //           console.log('Upload is paused');
-      //           break;
-      //         case 'running':
-      //           console.log('Upload is running');
-      //           break;
-      //       }
-      //     }, function (error) {
-      //       console.log(error);
-      //     }, function () {
-      //       uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-      //         console.log('File available at', downloadURL);
-      //         set(ref(database, 'messages/' + Date.now()), {
-      //           message: downloadURL + '_image',
-      //           name: document.querySelector('#user').innerHTML,
-      //           timeSent: (new Date().getHours()<10?'0':'') + new Date().getHours() + ":" + (new Date().getMinutes()<10?'0':'') + new Date().getMinutes(),
-      //           userUid: user.uid
-      //         })
-      //       });
-      //     });
-      // })
-
       function base64Url(file){
         return new Promise(function(resolve,reject){
             const reader = new FileReader();
@@ -247,100 +207,6 @@ const db = firebase.database();
         })
       }
 
-  // }
-
-      // set(ref(database, 'OnlineUsers/' + user.uid)), {
-      //   username: user.displayName
-      // }
-
-      // names.on('value', (snapshot) => {
-      //   let i = -1;
-      //   console.log(snapshot.val());
-      //   // let key = Object.keys(snapshot.val());
-      //   snapshot.forEach(element => {
-      //     i++;
-      //     let chatNames = '<li>' + element.val().username + '<span style="display: none;">' + key[i] + '</span> <button id="private">Private Chat</button> </li>'
-
-      //     document.getElementById('chatNames').innerHTML += chatNames;
-      //   });
-      // });
-      //ends here
-
-    // document.querySelector('#chat').addEventListener('click', () => {
-    //   document.querySelectorAll('#private').forEach(element => {
-    //     element.addEventListener('click', () => {
-    //       document.getElementById('send').style.display = 'none';
-    //       document.getElementById('sendPrivate').style.display = 'block';
-    //       let privateChatUid = element.parentNode.childNodes[1].innerHTML;
-    //       let privateChatName = element.parentNode.childNodes[0].data;
-    //       set(ref(database, 'PrivateMessages/' + user.uid + ',' + privateChatUid), {
-    //         communcation: user.uid + privateChatUid,
-    //       })
-    //       var messagesClass = document.querySelectorAll('#chat .imessage');
-  
-    //       for (let i = 0; i < messagesClass.length; i++) {
-    //         messagesClass[i].remove()
-    //       }
-
-    //       document.getElementById("PrivateName").innerHTML = privateChatName;
-
-    //       document.querySelector('#sendPrivate').addEventListener("click", function () {
-    //   let msg = document.getElementById("message").value;
-    //   // let sender = document.getElementById('user').innerHTML
-    //   let time = (new Date().getHours()<10?'0':'') + new Date().getHours() + ":" + (new Date().getMinutes()<10?'0':'') + new Date().getMinutes();
-
-    //   if (msg == ''){
-    //     return;
-    //   }
-
-      
-    //   push(ref(database, 'PrivateMessages/' + user.uid + ',' + privateChatUid), {
-    //     // name: user.displayName,
-    //     message: msg,
-    //     userUid: user.uid,
-    //     timeSent: time
-    //   })
-
-    //   let refMessage = user.uid + ',' + privateChatUid;
-
-    //   let reef = firebase.database().ref("PrivateMessages/" + refMessage);
-
-    //     reef.on("value", function(snapshot) {
-
-    //       var messagesClass = document.querySelectorAll('#chat .imessage');
-  
-    //       for (let i = 0; i < messagesClass.length; i++) {
-    //         messagesClass[i].remove()
-    //       }
-
-    //       console.log(snapshot.val());
-          
-    //       var data = snapshot.val()
-    //       var keys = Object.keys(data);
-    //       console.log(keys);
-    //       for (let i = 0; i < keys.length; i++){
-    //           let k = keys[i];
-    //           var liElement = "";
-    //           if (data[k].userUid == user.uid){
-    //             liElement = '<div class="imessage"> <li class="messages text-end from-me" id="right">' + data[k].message + '</li>' + '<p class="text-end" id="timeRight">' + data[k].timeSent + '</p> </div>'
-    //           }
-    //           else{
-    //             liElement = '<div class="imessage"> <p id="nameSender" class="text-start">' + data[k].name + '</p> <li class="messages text-start from-them" id="left">'  + data[k].message + '</li>' + '<li class="text-start" id="timeLeft">' + data[k].timeSent + '</li> </div>'
-    //           }
-    //             document.getElementById('chat').innerHTML += liElement;
-    //             // $(liElement).hide().appendTo('#chat').toggle('normal');
-    //             LastTime(document.querySelectorAll('#timeRight'));
-    //             LastTime(document.querySelectorAll('#timeLeft'));
-    //             setTimeout( () => {
-    //               scrollBottom(chat, 200)
-    //             }, 200)
-    //       }
-    //   });
-    //   document.getElementById('message').value = '';
-    // });
-    //     });
-    //   })
-    // })
     }   //istening for button on click and evaluating function
     document.querySelector('#send').addEventListener("click", SendMsg)
     //listening for enter key and evaluating function
@@ -409,7 +275,7 @@ const db = firebase.database();
           }
           MessagePoP();
         });
-      }, 500)
+      }, 10)
 
       }
 
@@ -466,6 +332,20 @@ const db = firebase.database();
   const time = (new Date().getHours()<10?'0':'') + new Date().getHours() + ":" + (new Date().getMinutes()<10?'0':'') + new Date().getMinutes();
   createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
+
+    setTimeout( () => {
+      firebase.database().ref("UserInfo/").on('value', (snapshot) => {
+          for (let i = 0; i < Object.keys(snapshot.val()).length; i++) {
+              if ( Object.keys(snapshot.val())[i] != user.uid ){
+                  set(ref(database, 'PrivateChats/' + user.uid + ',' + Object.keys(snapshot.val())[i]), {
+                      ChatWith: Object.keys(snapshot.val())[i]
+                  })
+                  console.log(Object.keys(snapshot.val())[i]);
+                  document.getElementById('onlineUsers').innerHTML += '<li id="User" class="text-start">' + snapshot.val()[Object.keys(snapshot.val())[i]].username +  '<span id="UserUid" >' + Object.keys(snapshot.val())[i] + '</span> </li>';
+              }
+          }
+      });
+    }, 2000)
 
     console.log('da');
     // const userCred = push(child(ref(database), 'user')).key;

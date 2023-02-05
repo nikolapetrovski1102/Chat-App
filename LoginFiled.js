@@ -51,24 +51,26 @@ const ShowLogOut = () => {
     document.querySelector('#IsSingedIn').style.visibility = 'visible'
 }
 
+let counter = 0;
 document.getElementById('ShowOnlineUsers').addEventListener('click', () => {
-    $('.second-float-child').fadeIn('slow');
-    document.querySelector('.second-float-child').classList.add('mobile')
-    document.getElementById('ShowOnlineUsers').style.display = 'none'
+    counter++;
+    if (counter % 2 != 0){
+        $('.float-container').animate({
+            marginLeft: '+=50%'
+        }, 250);
+    }
+    else{
+        $('.float-container').animate({
+            marginLeft: '-=50%'
+        }, 250);
+    }
 });
 
-document.getElementById('CloseUserCount').addEventListener('click', () => {
-    $('.second-float-child').fadeOut('slow');
-    document.querySelector('.second-float-child').classList.remove('mobile')
-    document.getElementById('ShowOnlineUsers').style.display = 'block'
-});
-
-    console.log( document.querySelectorAll('#exampleModal > div > div > div.modal-body > ul > li > img') );
-
-document.querySelectorAll('#exampleModal > div > div > div.modal-body > ul > li > img').forEach((li) => {
+document.querySelectorAll('#exampleModal > div > div > div.modal-body > ul > li').forEach((li) => {
     li.addEventListener('click', () => {
-        document.querySelector('#chat').style.backgroundImage = `url(${li.src})`
-        localStorage.setItem('background', li.src)
+        document.querySelector('#chat').style.backgroundImage = `url(${li.children[0].src})`
+        document.querySelector('#chat-private').style.backgroundImage = `url(${li.children[0].src})`
+        localStorage.setItem('background', li.children[0].src)
         document.querySelector('#exampleModal > div > div > div.modal-footer > button:nth-child(2)').click();
     })
 });

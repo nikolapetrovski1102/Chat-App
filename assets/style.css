@@ -49,10 +49,12 @@ body > div:nth-child(4){
     width: 8%!important;
   }
   .second-float-child{
-    display: none;
+    margin-left: -50%;
+    width: 55%!important;
   }
   .first-float-child{
-    width: 100%!important;
+    width: 95%!important;
+    margin-right: -3%!important;
   }
   .container{
     max-width: 100%;
@@ -70,13 +72,30 @@ body > div:nth-child(4){
   #chat{
     width: 100%!important;
   }
+  /* #chat-private{
+    width: 120%!important;
+    margin-left: -17%;
+  }
+  #first-float-child-private{
+    width: 120%!important;
+  }
+  .child-button-private{
+    width: 10%!important;
+    margin-left: 2%;
+  }
+  .child-input-private{
+    width: 90%!important;
+  }
+  .child-file-private {
+    width: 10%!important;
+  } */
   #message{
     width: 100%;
   }
   #IsSingedIn{
-    margin-right: 10%!important;
-    margin-top: 1%!important;
-    margin-bottom: 1%!important;
+    /* margin-right: 1%!important; */
+    margin-top: 2%!important;
+    margin-bottom: 2%!important;
   }
   #IsLogedIn .container{
     margin-top: -20%;
@@ -93,9 +112,9 @@ body > div:nth-child(4){
   float: right;
   display: none;
 }
-.second-float-child{
+/* .second-float-child{
   display: block;
-}
+} */
 #pulse {
   -webkit-animation: pulsate 2s ease-out;
   animation: pulsate 2s ease-out;
@@ -142,11 +161,11 @@ body > div:nth-child(4){
   #CloseUserCount{
     display: block;
   }
-  .second-float-child{
+  /* .second-float-child{
     display: none;
-  }
+  } */
   .first-float-child{
-    width: 100%!important;
+    width: 98%!important;
   }
   #message{
     width: 100%;
@@ -195,6 +214,40 @@ body > div:nth-child(4){
   padding: 0;
   margin-top: .5rem;
   margin-left: .7rem;
+}
+.lds-ellipsis-private {
+margin: auto;
+margin-top: auto;
+position: relative;
+top: 50%;
+transform: translate(0, -50%);
+width: 80px;
+height: 80px;
+}
+.lds-ellipsis-private div {
+position: absolute;
+top: 33px;
+width: 13px;
+height: 13px;
+border-radius: 50%;
+background: #248bf5;
+animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis-private div:nth-child(1) {
+left: 8px;
+animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis-private div:nth-child(2) {
+left: 8px;
+animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis-private div:nth-child(3) {
+left: 32px;
+animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis-private div:nth-child(4) {
+left: 56px;
+animation: lds-ellipsis3 0.6s infinite;
 }
 .lds-ellipsis {
 margin: auto;
@@ -460,7 +513,7 @@ body > div:nth-child(3){
   content: 'IMG';
   display: inline-block;
   background: linear-gradient(top, #f9f9f9, #e3e3e3);
-  border: 1px solid #999;
+  border: 5px solid #999;
   border-radius: 3px;
   padding: 5px 8px;
   outline: none;
@@ -493,7 +546,7 @@ font-size: 15px;
 line-height: 1.7;
 color: #c4c3ca;
 background-color: #1f2029;
-overflow-x: hidden;
+overflow: hidden;
 }
 a {
 cursor: pointer;
@@ -829,12 +882,12 @@ body > div:nth-child(5) > div{
   /* border: 3px solid #fff; */
 }
 .first-float-child {
-  width: 75%;
-  float: left;
+  width: 80%;
+  float: right;
 }  
 .second-float-child {
-  width: 25%;
-  float: right;
+  width: 20%;
+  float: left;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 .parent-input{
@@ -853,12 +906,29 @@ body > div:nth-child(5) > div{
   width: 10%;
   float: left;
 }
+.parent-input-private{
+  width: 100%;
+}
+.child-file-private{
+  width: 5%;
+  float: left;
+}
+.child-input-private{
+  width: 85%;
+  margin: 0;
+  float: left;
+}
+.child-button-private{
+  width: 10%;
+  float: left;
+}
 #message{
   width: 100%;
   height: 45px;
 }
 #send{
   width: 100%;
+  margin-left: -20%;
 }
 #FireInput{
   cursor: pointer;
@@ -871,7 +941,7 @@ body > div:nth-child(5) > div{
 #onlineUsers{
   overflow: auto;
   list-style-type: none;
-  margin-top: 2%!important;
+  margin-top: 4%!important;
 }
 #OnlineUser{
   font-size: 1.2rem;
@@ -880,6 +950,9 @@ body > button{
   visibility: hidden;
 }
 #ModalImage{
+  width: 100%;
+}
+#ModalImage-private{
   width: 100%;
 }
 .mobile{
@@ -901,4 +974,65 @@ body > button{
 }
 #ChangeBG li:active{
   opacity: .8;
+}
+#User{
+  padding-top: 5%;
+  padding-bottom: 5%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  margin-right: 10%;
+  border-bottom: 2px solid #000000;
+}
+#UserUid{
+  display: none;
+}
+.first-float-child-private{
+  display: none;
+  width: 95%;
+  margin-left: 7%;
+} 
+#chat-private{
+  width: 100%;
+  background-color: 	#1f2029;
+  list-style-type: none;
+  height: 500px;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  border-top: 1px solid #333;
+  padding-left: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-bottom: 0;
+}
+.parent-input-private{
+  width: 97%;
+}
+.child-file-private{
+  width: 5%;
+  float: left;
+}
+.child-input-private{
+  width: 85%;
+  margin: 0;
+  float: left;
+}
+.child-button-private{
+  width: 10%;
+  float: left;
+}
+#FireInput-private{
+  cursor: pointer;
+  width: 100%;
+}
+#FireInput-private:hover{
+  opacity: .5;
+}
+#message-private{
+  width: 98%;
+  height: 45px;
+}
+#send-private{
+  margin-left: -15%;
+  width: 100%;
 }
