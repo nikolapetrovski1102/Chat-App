@@ -1,18 +1,17 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
 import { getDatabase, set, ref, push } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 import { onAuthStateChanged, signOut, GoogleAuthProvider, getAuth, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"; 
-import { getStorage, ref as ref_storage} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDq6FucrXdbFCIEh9Q7xAw6aJs3irX77Y8",
-  authDomain: "realtime-chatapp-9ef58.firebaseapp.com",
-  databaseURL: "https://realtime-chatapp-9ef58-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "realtime-chatapp-9ef58",
-  storageBucket: "realtime-chatapp-9ef58.appspot.com",
-  messagingSenderId: "32685298126",
-  appId: "1:32685298126:web:4bd77d388dab3afb909b9f",
-  measurementId: "G-PE2LGSRHZH"
+  apiKey: "AIzaSyBv1HZ-dv0fHelFPplmo0NkUhLvjLCOF5U",
+  authDomain: "chatapp-5a8f7.firebaseapp.com",
+  databaseURL: "https://chatapp-5a8f7-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "chatapp-5a8f7",
+  storageBucket: "chatapp-5a8f7.appspot.com",
+  messagingSenderId: "664027121459",
+  appId: "1:664027121459:web:c65c3367d6d0b7a2a1a046",
+  measurementId: "G-GQRPMCSEFE"
 };
 
 // Initialize Firebase
@@ -21,6 +20,33 @@ const database = getDatabase(app)
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider(app);
 const db = firebase.database();
+
+  const RequestNotification = () => {
+    Notification.requestPermission().then(function (permission) {
+      if (permission === 'granted'){
+        console.log('granted');
+        new Notification ('Welcome to ChatApp', {
+          body: 'You can now send and receive messages',
+        })
+      }
+      else if (permission === 'denied'){
+        new Notification ('Welcome to ChatApp', {
+          body: 'You can now send and receive messages please allow notifications to get notified when you receive a message',
+        })
+      }
+      else if (permission === 'default'){
+        new Notification ('Welcome to ChatApp', {
+          body: 'You can now send and receive messages please allow notifications to get notified when you receive a message',
+        })
+      }
+    }
+  )};
+
+  let ShowNotification = document.visibilityState !== 'visible';
+
+  if (ShowNotification){
+    console.log('show notification');
+  }
 
   //scroll to bottom on page load and on new message
   const scrollBottom = (element, t) => {
@@ -85,7 +111,7 @@ const db = firebase.database();
             console.log(snapshot.val().userUid);
             document.querySelectorAll('#onlineUsers li').forEach(element => {
                 if (element.querySelector('span').innerHTML == snapshot.val().userUid){
-                  element.innerHTML = snapshot.val().username + '     &#128994' + '<span style="display: none;">' + snapshot.val().userUid + '</span>'
+                  element.innerHTML = snapshot.val().username + '     &#128994' + '<span id="UserUid" style="display: none;">' + snapshot.val().userUid + '</span>'
                   OnlineUsersCount++;
                 }
               });
@@ -231,6 +257,7 @@ const db = firebase.database();
 
       //clear input field
       document.getElementById('message').value = '';
+      RequestNotification();
     }
 
 
@@ -258,6 +285,7 @@ const db = firebase.database();
           info = '<div class="text-center" id="selector"> <p> <strong id="JoinedUser">' + snapshot.val().name + '</strong> ' + snapshot.val().message + '</p> <p id="NewUserTime">' + snapshot.val().timeSent + '</p> </div>'
         }
         else if (sender === snapshot.val().name){
+          // info = '<div class="d-flex align-items-center float-end"> <div class="d-inline-block">Delete</div> <div class="d-inline-block"> <li class="sent">' + snapshot.val().message + '</li> </div> </div>'
           info = '<div id="me" class="imessage text-end"> <li class="messages text-end from-me" id="right">' + snapshot.val().message + '</li>' + '<p class="text-end" id="timeRight">' + snapshot.val().timeSent + '</p> </div>'
         }
         else{
@@ -333,19 +361,19 @@ const db = firebase.database();
   createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
 
-    setTimeout( () => {
-      firebase.database().ref("UserInfo/").on('value', (snapshot) => {
-          for (let i = 0; i < Object.keys(snapshot.val()).length; i++) {
-              if ( Object.keys(snapshot.val())[i] != user.uid ){
-                  set(ref(database, 'PrivateChats/' + user.uid + ',' + Object.keys(snapshot.val())[i]), {
-                      ChatWith: Object.keys(snapshot.val())[i]
-                  })
-                  console.log(Object.keys(snapshot.val())[i]);
-                  document.getElementById('onlineUsers').innerHTML += '<li id="User" class="text-start">' + snapshot.val()[Object.keys(snapshot.val())[i]].username +  '<span id="UserUid" >' + Object.keys(snapshot.val())[i] + '</span> </li>';
-              }
-          }
-      });
-    }, 2000)
+    // setTimeout( () => {
+    //   firebase.database().ref("UserInfo/").on('value', (snapshot) => {
+    //       for (let i = 0; i < Object.keys(snapshot.val()).length; i++) {
+    //           if ( Object.keys(snapshot.val())[i] != user.uid ){
+    //               set(ref(database, 'PrivateChats/' + user.uid + ',' + Object.keys(snapshot.val())[i]), {
+    //                   ChatWith: Object.keys(snapshot.val())[i]
+    //               })
+    //               console.log(Object.keys(snapshot.val())[i]);
+    //               document.getElementById('onlineUsers').innerHTML += '<li id="User" class="text-start a"> <a>' + snapshot.val()[Object.keys(snapshot.val())[i]].username +  '</a> <span id="UserUid" >' + Object.keys(snapshot.val())[i] + '</span> </li>';
+    //           }
+    //       }
+    //   });
+    // }, 2000)
 
     console.log('da');
     // const userCred = push(child(ref(database), 'user')).key;

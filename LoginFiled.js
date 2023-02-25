@@ -77,6 +77,7 @@ document.querySelectorAll('#exampleModal > div > div > div.modal-body > ul > li'
 
 document.querySelector('#exampleModal > div > div > div.modal-footer > button:nth-child(1)').addEventListener('click', () => {
     document.querySelector('#chat').style.background = '#1f2029';
+    document.querySelector('#chat-private').style.background = '#1f2029';
     localStorage.removeItem('background')
     localStorage.setItem('background', '#1f2029')
 });

@@ -1,18 +1,17 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
 import { getDatabase, set, ref, push } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
-import { onAuthStateChanged, signOut, GoogleAuthProvider, getAuth, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"; 
-import { getStorage, ref as ref_storage} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";
+import { onAuthStateChanged, GoogleAuthProvider, getAuth } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"; 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDq6FucrXdbFCIEh9Q7xAw6aJs3irX77Y8",
-    authDomain: "realtime-chatapp-9ef58.firebaseapp.com",
-    databaseURL: "https://realtime-chatapp-9ef58-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "realtime-chatapp-9ef58",
-    storageBucket: "realtime-chatapp-9ef58.appspot.com",
-    messagingSenderId: "32685298126",
-    appId: "1:32685298126:web:4bd77d388dab3afb909b9f",
-    measurementId: "G-PE2LGSRHZH"
-  };
+  apiKey: "AIzaSyBv1HZ-dv0fHelFPplmo0NkUhLvjLCOF5U",
+  authDomain: "chatapp-5a8f7.firebaseapp.com",
+  databaseURL: "https://chatapp-5a8f7-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "chatapp-5a8f7",
+  storageBucket: "chatapp-5a8f7.appspot.com",
+  messagingSenderId: "664027121459",
+  appId: "1:664027121459:web:c65c3367d6d0b7a2a1a046",
+  measurementId: "G-GQRPMCSEFE"
+};
   
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
@@ -54,25 +53,35 @@ const firebaseConfig = {
 
         let username = document.getElementById('user').innerHTML;
 
+    // setTimeout( () => {
         firebase.database().ref('UserInfo/').on('value', (snapshot) => {
                 for (let i = 0; i < Object.keys(snapshot.val()).length; i++) {
                   if (Object.keys(snapshot.val())[i] != user.uid){
-                    document.getElementById('onlineUsers').innerHTML += '<li id="User" class="text-start">' + snapshot.val()[Object.keys(snapshot.val())[i]].username +  '<span id="UserUid" >' + Object.keys(snapshot.val())[i] + '</span> </li>';
+                    document.getElementById('onlineUsers').innerHTML += '<li id="User" class="text-start"> <a id="UserRedirect" href="/nekoj">' + snapshot.val()[Object.keys(snapshot.val())[i]].username + '</a> <span id="UserUid" >' + Object.keys(snapshot.val())[i] + '</span> </li>';
                   }
                 }
         });
+    // }, 2000)
 
         let ChatWithUid = '';
         setTimeout( () => {
             document.querySelectorAll('#User').forEach(element => {
                 element.addEventListener('click', () => {
+                  // window.location.assign('http://localhost:5000/new.html');
+                  if (document.querySelector('#chat-private').hasChildNodes()){
+                    document.querySelectorAll('#chat-private .imessage').forEach(element => {
+                      element.remove();  
+                    });
+                  }
                   function autoResizeDiv()
                   {
-                      document.getElementById('chat-private').style.height = window.innerHeight - 650 +'px';
+                      document.getElementById('chat-private').style.height = window.innerHeight - 150 +'px';
                   }
                   window.onresize = autoResizeDiv;
                   autoResizeDiv();
-                    document.getElementById('ShowOnlineUsers').click();
+                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                      document.getElementById('ShowOnlineUsers').click();
+                    }
                     document.getElementById('chat-with').innerHTML = element.innerHTML;
                     document.querySelector('.first-float-child').style.display = 'none';
                     document.querySelector('.first-float-child-private').style.display = 'block';

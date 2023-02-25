@@ -886,6 +886,7 @@ body > div:nth-child(5) > div{
   float: right;
 }  
 .second-float-child {
+  margin-top: 3%;
   width: 20%;
   float: left;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
@@ -928,7 +929,6 @@ body > div:nth-child(5) > div{
 }
 #send{
   width: 100%;
-  margin-left: -20%;
 }
 #FireInput{
   cursor: pointer;
@@ -939,9 +939,14 @@ body > div:nth-child(5) > div{
   opacity: .5;
 }
 #onlineUsers{
+  list-style-type: none;
   overflow: auto;
   list-style-type: none;
   margin-top: 4%!important;
+}
+#onlineUsers a{
+  color: #fff;
+  text-decoration: none;
 }
 #OnlineUser{
   font-size: 1.2rem;
@@ -992,7 +997,7 @@ body > button{
   margin-left: 7%;
 } 
 #chat-private{
-  width: 100%;
+  width: 83%;
   background-color: 	#1f2029;
   list-style-type: none;
   height: 500px;
