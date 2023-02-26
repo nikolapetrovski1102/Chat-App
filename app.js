@@ -108,7 +108,6 @@ const db = firebase.database();
         let OnlineUsersCount = 0;
         OnlineUsers.on('child_added', (snapshot) => {
           if (snapshot.val().userUid != user.uid){
-            console.log(snapshot.val().userUid);
             document.querySelectorAll('#onlineUsers li').forEach(element => {
                 if (element.querySelector('span').innerHTML == snapshot.val().userUid){
                   element.innerHTML = snapshot.val().username + '     &#128994' + '<span id="UserUid" style="display: none;">' + snapshot.val().userUid + '</span>'
@@ -116,7 +115,7 @@ const db = firebase.database();
                 }
               });
           }
-          document.querySelector('#OnlineUsersCount').innerHTML = 'Online Users' + ' (' + OnlineUsersCount + ')';
+          document.querySelector('#OnlineUsersCount').innerHTML = 'Online Users' + ' (' + OnlineUsersCount + ')' + '<img class="ms-3" src="./assets/CreateGroup.png" id="CreateGroupButton" data-bs-toggle="modal" data-bs-target="#CreateGroup" alt="Create group" width="40">';
           document.querySelector('#ShowOnlineUsers').innerHTML = OnlineUsersCount + ' <span id="pulse" > &#128994 </span>';
         });
 
@@ -146,7 +145,7 @@ const db = firebase.database();
               console.log('removed');
               element.innerHTML = snapshot.val().username + '<span style="display: none;">  ' + snapshot.val().userUid + '</span>'
               OnlineUsersCount--;
-              document.querySelector('#OnlineUsersCount').innerHTML = 'Online Users' + ' (' + OnlineUsersCount + ')';
+              document.querySelector('#OnlineUsersCount').innerHTML = 'Online Users' + ' (' + OnlineUsersCount + ')' + '<img class="ms-3" src="./assets/CreateGroup.png" id="CreateGroupButton" data-bs-toggle="modal" data-bs-target="#CreateGroup" alt="Create group" width="40">' ;
               document.querySelector('#ShowOnlineUsers').innerHTML = OnlineUsersCount + ' <span id="pulse" > &#128994 </span>';
             }
           })
@@ -199,8 +198,9 @@ const db = firebase.database();
 
     document.getElementById('fileInput').onchange = async function () {
       url = await base64Url(this.files[0]);
-      document.querySelector('body > button').click();
+      console.log(url);
       document.getElementById('ModalImage').src = url;
+      document.querySelector('#ImagePublic').click();
     };
 
     document.querySelector('#myModal > div > div > div.modal-footer > button:nth-child(1)').addEventListener('click', () => {
@@ -360,20 +360,6 @@ const db = firebase.database();
   const time = (new Date().getHours()<10?'0':'') + new Date().getHours() + ":" + (new Date().getMinutes()<10?'0':'') + new Date().getMinutes();
   createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
-
-    // setTimeout( () => {
-    //   firebase.database().ref("UserInfo/").on('value', (snapshot) => {
-    //       for (let i = 0; i < Object.keys(snapshot.val()).length; i++) {
-    //           if ( Object.keys(snapshot.val())[i] != user.uid ){
-    //               set(ref(database, 'PrivateChats/' + user.uid + ',' + Object.keys(snapshot.val())[i]), {
-    //                   ChatWith: Object.keys(snapshot.val())[i]
-    //               })
-    //               console.log(Object.keys(snapshot.val())[i]);
-    //               document.getElementById('onlineUsers').innerHTML += '<li id="User" class="text-start a"> <a>' + snapshot.val()[Object.keys(snapshot.val())[i]].username +  '</a> <span id="UserUid" >' + Object.keys(snapshot.val())[i] + '</span> </li>';
-    //           }
-    //       }
-    //   });
-    // }, 2000)
 
     console.log('da');
     // const userCred = push(child(ref(database), 'user')).key;

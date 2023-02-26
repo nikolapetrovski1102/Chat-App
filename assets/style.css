@@ -72,23 +72,6 @@ body > div:nth-child(4){
   #chat{
     width: 100%!important;
   }
-  /* #chat-private{
-    width: 120%!important;
-    margin-left: -17%;
-  }
-  #first-float-child-private{
-    width: 120%!important;
-  }
-  .child-button-private{
-    width: 10%!important;
-    margin-left: 2%;
-  }
-  .child-input-private{
-    width: 90%!important;
-  }
-  .child-file-private {
-    width: 10%!important;
-  } */
   #message{
     width: 100%;
   }
@@ -112,9 +95,6 @@ body > div:nth-child(4){
   float: right;
   display: none;
 }
-/* .second-float-child{
-  display: block;
-} */
 #pulse {
   -webkit-animation: pulsate 2s ease-out;
   animation: pulsate 2s ease-out;
@@ -497,8 +477,12 @@ body > div.text-center.w-auto.container{
 body > div:nth-child(3){
   margin-left: 17.5%;
 }
-#OnlineUsers > li{
+#onlineUsers > li{
   list-style-type: none;
+  cursor: pointer;
+}
+#onlineUsers > li:hover{
+  background-color: #21242d;
 }
 #rightImage{
   padding: 0;
@@ -587,11 +571,6 @@ margin-top: 10%;
 }
 .full-height{
 min-height: 100vh;
-}
-[type="checkbox"]:checked,
-[type="checkbox"]:not(:checked){
-position: absolute;
-left: -9999px;
 }
 .checkbox:checked + label,
 .checkbox:not(:checked) + label{
@@ -879,7 +858,6 @@ body > div:nth-child(5) > div{
 }
 .float-container {
   width: 100%;
-  /* border: 3px solid #fff; */
 }
 .first-float-child {
   width: 80%;
@@ -891,51 +869,34 @@ body > div:nth-child(5) > div{
   float: left;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
-.parent-input{
+.parent-input, .parent-input-private, .parent-input-group{
   width: 100%;
 }
-.child-file{
+.child-file, .child-file-private, .child-file-group{
   width: 5%;
   float: left;
 }
-.child-input{
+.child-input, .child-input-private, .child-input-group{
   width: 85%;
   margin: 0;
   float: left;
 }
-.child-button{
+.child-button, .child-button-private, .child-button-group{
   width: 10%;
   float: left;
 }
-.parent-input-private{
-  width: 100%;
-}
-.child-file-private{
-  width: 5%;
-  float: left;
-}
-.child-input-private{
-  width: 85%;
-  margin: 0;
-  float: left;
-}
-.child-button-private{
-  width: 10%;
-  float: left;
-}
-#message{
+#message, #message-private, #message-group{
   width: 100%;
   height: 45px;
 }
-#send{
+#send, #send-private, #send-group{
   width: 100%;
 }
-#FireInput{
+#FireInput, #FireInput-private, #FireInput-group{
   cursor: pointer;
   width: 100%;
-  /* height: 40px; */
 }
-#FireInput:hover{
+#FireInput:hover, #FireInput-private:hover, #FireInput-group:hover{
   opacity: .5;
 }
 #onlineUsers{
@@ -960,6 +921,9 @@ body > button{
 #ModalImage-private{
   width: 100%;
 }
+#ModalImageGroup{
+  width: 100%;
+}
 .mobile{
   background-color: #1f2029;
   position: absolute;
@@ -980,64 +944,74 @@ body > button{
 #ChangeBG li:active{
   opacity: .8;
 }
-#User{
+#User, #UserGroup, #AddToGroup{
+  padding-left: 7%;
   padding-top: 5%;
   padding-bottom: 5%;
   margin-top: 1%;
-  margin-bottom: 1%;
-  margin-right: 10%;
-  border-bottom: 2px solid #000000;
+  margin-left: -7%;
+  margin-bottom: 3%;
+  margin-right: 3%;
+  border-bottom: 3px solid #000000;
+  border-left: 3px solid #000000;
+  border-radius: 10px;
+}
+#UserGroupCheckBox{
+  float: right;
+  margin-right: 5%;
+  margin-top: 2%;
+  
+}
+#AddToGroup:active{
+  transform: translateY(4px);
+  transition: all 0.2s ease-in-out;
 }
 #UserUid{
+  display: none;
+}
+#GroupUid{
   display: none;
 }
 .first-float-child-private{
   display: none;
   width: 95%;
   margin-left: 7%;
-} 
-#chat-private{
-  width: 83%;
-  background-color: 	#1f2029;
-  list-style-type: none;
-  height: 500px;
-  border-left: 1px solid #333;
-  border-right: 1px solid #333;
-  border-top: 1px solid #333;
-  padding-left: 0;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  margin-bottom: 0;
 }
-.parent-input-private{
-  width: 97%;
-}
-.child-file-private{
-  width: 5%;
-  float: left;
-}
-.child-input-private{
-  width: 85%;
-  margin: 0;
-  float: left;
-}
-.child-button-private{
-  width: 10%;
-  float: left;
-}
-#FireInput-private{
+#CreateGroupButton{
   cursor: pointer;
-  width: 100%;
 }
-#FireInput-private:hover{
-  opacity: .5;
+#CreateGroupButton{
+  cursor: pointer;
 }
-#message-private{
-  width: 98%;
-  height: 45px;
+#BackToPublic{
+  width: 7%;
+  height: 35px;
+  padding: 0;
+  margin-right: 2%;
 }
-#send-private{
-  margin-left: -15%;
-  width: 100%;
+#onlineUsersGroup{
+  list-style-type: none;
+}
+label{
+  cursor: pointer;
+}
+.modal-header {
+  background: #21242d;
+}
+.modal-footer{
+  background: #21242d;
+}
+.modal-body{
+  background: #1f2029;
+}
+.modal-content{
+  border-radius: 25px;
+}
+#GroupName{
+  background-color: #35363E;
+  border-radius: 10px;
+  padding-left: 5px;
+}
+#reg-log{
+  display: none;
 }
